@@ -15,7 +15,7 @@ Assembly math library for C, featuring SIMD (AVX2) optimized array operations.
 
 ## Benchmark Results
 
-Tested on x86-64 Linux (AVX2), 1 billion iterations:
+Tested on x86-64 Linux (AVX2), 100 million iterations:
 
 | Implementation | Time | Speed |
 |---|---|---|
