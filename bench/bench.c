@@ -1,16 +1,22 @@
 #include <stdio.h>
 #include <time.h>
+#include <stdlib.h>
 
 void add_arrays(long *a, long *b, long *result, long len);
-void simd_add_arrays(long *a, long *b, long *result);
+void simd_add_arrays(long *a, long *b, long *result, long len);
 
-#define SIZE 4
-#define ITERATIONS 100000000
+#define SIZE 10000
+#define ITERATIONS 100000
 
 int main() {
-	long a[SIZE] = {1, 2, 3, 4};
-	long b[SIZE] = {5, 6, 7, 8};
-	long result[SIZE];
+	long *a = malloc(SIZE * sizeof(long));
+	long *b = malloc(SIZE * sizeof(long));
+	long *result = malloc(SIZE * sizeof(long));
+
+	for (int i = 0; i < SIZE; i++) {
+    		a[i] = i + 1;
+    		b[i] = i + 2;
+	}
 
 	clock_t start, end;
 
@@ -26,7 +32,7 @@ int main() {
 	//benchmark test for simd array addition in assembly (4 by 4)
 	start = clock();
 	for (long i = 0; i < ITERATIONS; i++) {
-		simd_add_arrays(a, b, result);
+		simd_add_arrays(a, b, result, SIZE);
 	}
 	end = clock();
 	double simd_time = (double)(end - start) / CLOCKS_PER_SEC;
