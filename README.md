@@ -23,6 +23,7 @@ Tested on x86-64 Linux (AVX2), 100 million iterations:
 | SIMD `simd_add_arrays` | 0.092s | **1.98x** |
 
 | Array Size | Speedup | Bottleneck |
+|---|---|---|
 | 8 elements | 2.24x | CPU bound |
 | 10,000 | 1.49x | Cache bound |
 | 8,000,000 | 1.07x | Memory bound |
@@ -36,8 +37,8 @@ cleanup loop, reducing overall speedup.
 
 | Array Size | Divisible by 4 | Speedup |
 |---|---|---|
-| 7 elements | No  | 1.18x |
-| 8 elements | Yes | 2.24x |
+| 7 elements | No  | **1.18x** |
+| 8 elements | Yes | **2.24x** |
 
 ## Build
 
