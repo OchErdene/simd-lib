@@ -1,17 +1,11 @@
-#include<stdio.h>
-
-long add(long a, long b);
-long multiply(long a, long b);
-long subtract(long a, long b);
-long divide(long a, long b);
-void add_arrays(long *a, long *b, long *result, long len);
-void simd_add_arrays(long *a, long *b, long *result);
+#include <stdio.h>
+#include "simdlib.h"
 
 int main() {
 
 	long a;
 	long b;
-	long c[4] = {1, 2, 3, 4};
+	long c[4] = {5, 3, 1, 9};
 	long d[4] = {5, 6, 7, 8};
 	long array_result[4];
 
@@ -24,7 +18,7 @@ int main() {
 
 	printf("\n");
 
-	simd_add_arrays(c, d, array_result);
+	simd_add_arrays(c, d, array_result, 4);
 	printf("SIMD Array addition:\n");
 	for (int i = 0; i < 4; i++) {
 		printf("c[%d] + d[%d] = %ld\n", i, i, array_result[i]);
@@ -32,6 +26,23 @@ int main() {
 
 	printf("\n");
 
+	subtract_arrays(c, d, array_result, 4);
+
+	printf("Array subtraction:\n");
+	for (int i = 0; i < 4; i++) {
+		printf("c[%d] - d[%d] = %ld\n", i, i, array_result[i]);
+	}
+
+	printf("\n");
+
+	simd_subtract_arrays(c, d, array_result, 4);
+
+	printf("SIMD Array subtraction:\n");
+        for (int i = 0; i < 4; i++) {
+                printf("c[%d] - d[%d] = %ld\n", i, i, array_result[i]);
+        }
+
+	printf("\n");
 
 	scanf("%ld", &a);
 	scanf("%ld", &b);

@@ -5,6 +5,8 @@ section .text
 	global divide
 	global add_arrays
 	global simd_add_arrays
+	global subtract_arrays
+	global simd_subtract_arrays
 
 add:
 	mov rax, rdi
@@ -43,7 +45,7 @@ div_done:
 add_arrays:
 	mov r8, 0
 
-array_loop:
+add_array_loop:
 	mov rax, [rdi]
 	add rax, [rsi]
 	mov [rdx], rax
@@ -52,7 +54,7 @@ array_loop:
 	add rsi, 8
 	add rdx, 8
 	cmp r8, rcx
-	jl array_loop
+	jl add_array_loop
 	ret
 
 simd_add_arrays:
@@ -87,4 +89,52 @@ addition_scalar_cleanup:
 	jmp addition_scalar_cleanup
 
 scalar_done:
+	ret
+
+subtract_arrays:
+	mov r8, 0
+
+subtract_array_loop:
+	mov rax, [rdi]
+	sub rax, [rsi]
+	mov [rdx], rax
+	add r8, 1
+	add rdi, 8
+	add rsi, 8
+	add rdx, 8
+	cmp r8, rcx
+	jl subtract_array_loop
+	ret
+
+simd_subtract_arrays:
+	xor r8d, r8d
+
+simd_subtraction_loop:
+	mov rax, rcx
+	sub rax, r8
+	cmp rax, 4
+	jl subtraction_scalar_cleanup
+	vmovdqu ymm0, [rdi]
+	vmovdqu ymm1, [rsi]
+	vpsubq ymm2, ymm0, ymm1
+	vmovdqu [rdx], ymm2
+	add r8, 4
+	add rdi, 32
+	add rsi, 32
+	add rdx, 32
+	cmp r8, rcx
+	jl simd_subtraction_loop
+
+subtraction_scalar_cleanup:
+	cmp r8, rcx
+	jge sub_scalar_done
+	mov rax, [rdi]
+	sub rax, [rsi]
+	mov [rdx], rax
+	add rdi, 8
+	add rsi, 8
+	add rdx, 8
+	jmp subtraction_scalar_cleanup
+
+sub_scalar_done:
 	ret

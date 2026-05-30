@@ -1,9 +1,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
-
-void add_arrays(long *a, long *b, long *result, long len);
-void simd_add_arrays(long *a, long *b, long *result, long len);
+#include "../src/simdlib.h"
 
 #define SIZE 10000
 #define ITERATIONS 100000
