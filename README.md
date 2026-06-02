@@ -11,7 +11,9 @@ Assembly math library for C, featuring SIMD (AVX2) optimized array operations.
 | `multiply(a, b)` | Multiply via repeated addition |
 | `divide(a, b)` | Divide via repeated subtraction |
 | `add_arrays(a, b, result, len)` | Add two arrays element-wise |
-| `simd_add_arrays(a, b, result)` | Add two arrays using AVX2 SIMD (4 by 4)|
+| `simd_add_arrays(a, b, result, len)` | Add two arrays using AVX2 SIMD (4 by 4)|
+| `subtract_arrays(a, b, result, len)` | Subtract two arrays element-wise |
+| `simd_subtract_arrays(a, b, result, len)` | Subtract two arrays using AVX2 SIMD (4 by 4)|
 
 ## Benchmark Results
 
