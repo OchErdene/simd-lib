@@ -9,5 +9,7 @@ void add_arrays(long *a, long *b, long *result, long len);
 void simd_add_arrays(long *a, long *b, long *result, long len);
 void subtract_arrays(long *a, long *b, long *result, long len);
 void simd_subtract_arrays(long *a, long *b, long *result, long len);
+double dot_product(double *a, double *b, long len);
+double simd_dot_product(double *a, double *b, long len);
 
 #endif
