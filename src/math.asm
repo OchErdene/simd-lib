@@ -7,6 +7,12 @@ section .text
 	global simd_add_arrays
 	global subtract_arrays
 	global simd_subtract_arrays
+	global dot_product
+	global simd_dot_product
+	global scale_array
+	global simd_scale_array
+	global relu_array
+	global simd_relu_array
 
 add:
 	mov rax, rdi
@@ -137,4 +143,59 @@ subtraction_scalar_cleanup:
 	jmp subtraction_scalar_cleanup
 
 sub_scalar_done:
+	ret
+
+dot_product:
+	mov r8, 0
+	mov rax, 0
+
+dot_product_loop:
+	mov rcx, [rdi]
+	imul rcx, [rsi]
+	add rsi, 8
+	add rdi, 8
+	add rax, rcx
+	add r8, 1
+	cmp r8, rdx
+	jl dot_product_loop
+	mov rcx, 1000
+	cqo
+	idiv rcx
+	ret
+
+simd_dot_product:
+	mov r8, rdx
+	xor rax, rax
+	vpxor ymm3, ymm3, ymm3
+
+simd_dot_product_loop:
+	cmp r8, 4
+	jl simd_dot_cleanup
+	vmovdqu ymm0, [rdi]
+	vmovdqu ymm1, [rsi]
+	vpmullq ymm2, ymm0, ymm1
+	vpaddq ymm3, ymm3, ymm2
+	add rdi, 32
+	add rsi, 32
+	sub r8, 4
+	jg simd_dot_product_loop
+
+simd_dot_cleanup:
+	cmp r8, 0
+	jle simd_dot_done
+	mov rcx, [rdi]
+	imul rcx, [rsi]
+	add rsi, 8
+	add rdi, 8
+	add rax, rcx
+	sub r8, 1
+	jmp simd_dot_cleanup
+
+simd_dot_done:
+	vextracti128 xmm1, ymm3, 1
+	vpaddq xmm0, xmm3, xmm1
+	vpunpckhqdq xmm1, xmm0, xmm0
+	vpaddq xmm0, xmm0, xmm1
+	vmovq rcx, xmm0
+	add rax, rcx
 	ret
