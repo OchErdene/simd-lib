@@ -14,6 +14,8 @@ Assembly math library for C, featuring SIMD (AVX2) optimized array operations.
 | `simd_add_arrays(a, b, result, len)` | Add two arrays using AVX2 SIMD (4 by 4)|
 | `subtract_arrays(a, b, result, len)` | Subtract two arrays element-wise |
 | `simd_subtract_arrays(a, b, result, len)` | Subtract two arrays using AVX2 SIMD (4 by 4)|
+| `dot_product(a, b, len)` | Find dot product of given two arrays element-wise |
+| `simd_dot_product(a, b, len)` | Find dot product of given two arrays using AVX2 SIMD |
 
 ## Benchmark Results
 
@@ -57,3 +59,5 @@ Functions are written in NASM assembly (`src/math.asm`) and linked with a C driv
 - Arguments passed in `rdi`, `rsi`, `rdx`, `rcx`	
 - Return value in `rax`
 - SIMD uses 256-bit `ymm` registers to process 4 x 64-bit integers per instruction
+- SIMD uses 128-bit `xmm` register to process 2 x 64-bit doubles per instruction
+- Return value in `xmm0`
